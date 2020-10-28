@@ -104,7 +104,7 @@ public class BController
 	}
 	
 	// 댓글 Proecess
-	@RequestMapping("/reply")
+	@RequestMapping(value="/reply", method = RequestMethod.POST)
 	public String reply(HttpServletRequest request, Model model)
 	{
 		System.out.println("reply()");

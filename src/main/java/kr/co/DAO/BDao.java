@@ -39,7 +39,8 @@ public class BDao
 	{
 		ArrayList<BDto> boardList = new ArrayList<BDto>();
 		
-		String sql = "SELECT * FROM MVC_BOARD ORDER BY BGROUP DESC, BINDENT ASC";
+		String sql = "SELECT * FROM MVC_BOARD START WITH BINDENT=0 CONNECT BY PRIOR BID = BSTEP ORDER SIBLINGS BY BGROUP DESC";
+		
 		try
 		{
 			pstmt = con.prepareStatement(sql); 
@@ -108,23 +109,23 @@ public class BDao
 		}
 	}
 	
-	// 스탭
-	public void step(int bId, int bStep)
-	{
-		String sql = "UPDATE MVC_BOARD SET BSTEP = ?+1 WHERE BID = ?";
-		
-		try
-		{
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bStep);
-			pstmt.setInt(2, bId);
-			pstmt.executeUpdate();
-			
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	// 스탭
+//	public void step(int bId, int bStep)
+//	{
+//		String sql = "UPDATE MVC_BOARD SET BSTEP = ?+1 WHERE BID = ?";
+//		
+//		try
+//		{
+//			pstmt = con.prepareStatement(sql);
+//			pstmt.setInt(1, bStep);
+//			pstmt.setInt(2, bId);
+//			pstmt.executeUpdate();
+//			
+//		} catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 	
 
 	// 해당게시글 보기
@@ -176,8 +177,6 @@ public class BDao
 		{
 			e.printStackTrace();
 		}
-		
-
 	}
 
 	// 글 삭제
@@ -211,7 +210,7 @@ public class BDao
 			pstmt.setString(2, bTitle);
 			pstmt.setString(3, bContent);
 			pstmt.setInt(4, bGroup);
-			pstmt.setInt(5, bStep);
+			pstmt.setInt(5, bId);
 			pstmt.setInt(6, bIndent+1);
 			
 			pstmt.executeUpdate();
